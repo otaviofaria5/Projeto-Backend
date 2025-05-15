@@ -1,6 +1,5 @@
 using Projeto_Backend.Model;
 using Projeto_Backend.Services;
-using static Projeto_Backend.Services.UsuariosService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +10,7 @@ builder.Services.Configure<LivrosDatabaseSettings>
 builder.Services.AddSingleton<LivrosServices>();
 
 builder.Services.Configure<UsuarioDatabaseSettings>
-    (builder.Configuration.GetSection("DevNetStoreDatabaseUsuario"));
+    (builder.Configuration.GetSection("DevNetStoreDatabaseUsuarios"));
 
 builder.Services.AddSingleton<UsuarioServices>();
 

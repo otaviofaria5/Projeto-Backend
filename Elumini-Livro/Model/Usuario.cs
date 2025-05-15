@@ -7,9 +7,9 @@ namespace Projeto_Backend.Model
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Endereco { get; set; }
+        public string? id { get; set; }
+        public string? nome { get; set; }
+        public string? email { get; set; }
+        public string? endereco { get; set; }
     }
 }

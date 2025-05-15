@@ -7,17 +7,18 @@ namespace Projeto_Backend.Model
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string? id { get; set; }
 
-        public string Titulo { get; set; }
+        public string? titulo { get; set; }
+        [BsonElement("autorId")]
+        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+        public string? autorId { get; set; }
 
-        public string? AutorId { get; set; }
+        public string? genero { get; set; }
 
-        public string Genero { get; set; }
+        public string? isbn { get; set; }
 
-        public string isbn { get; set; }
-
-        public string descricao { get; set; }
+        public string? descricao { get; set; }
 
 
     }

@@ -4,8 +4,6 @@ using Projeto_Backend.Model;
 
 namespace Projeto_Backend.Services
 {
-    public class UsuariosService
-    {
         public class UsuarioServices
         {
             private readonly IMongoCollection<Usuario> _usuarioCollection;
@@ -23,17 +21,17 @@ namespace Projeto_Backend.Services
                 await _usuarioCollection.Find(x => true).ToListAsync();
 
             public async Task<Usuario> GetAsync(string id) =>
-                await _usuarioCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+                await _usuarioCollection.Find(x => x.id == id).FirstOrDefaultAsync();
 
             public async Task CreateAsync(Usuario usuario) =>
                 await _usuarioCollection.InsertOneAsync(usuario);
 
             public async Task UpdateAsync(string id, Usuario usuario) =>
-                await _usuarioCollection.ReplaceOneAsync(x => x.Id == id, usuario);
+                await _usuarioCollection.ReplaceOneAsync(x => x.id == id, usuario);
 
             public async Task RemoveAsync(string id) =>
-                await _usuarioCollection.DeleteOneAsync(x => x.Id == id);
+                await _usuarioCollection.DeleteOneAsync(x => x.id == id);
         }
-    }
+    
 
 }

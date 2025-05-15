@@ -19,12 +19,12 @@ namespace Projeto_Backend.Services
         public async Task<List<Livros>> GetAsync() =>
           await _livrosCollection.Find(x => true).ToListAsync();
         public async Task<Livros> GetAsync(string id) =>
-           await _livrosCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+           await _livrosCollection.Find(x => x.id == id).FirstOrDefaultAsync();
         public async Task CreateAsync(Livros livros) =>
             await _livrosCollection.InsertOneAsync(livros);
         public async Task UpdateAsync(string id, Livros livros) =>
-           await _livrosCollection.ReplaceOneAsync(x => x.Id == id, livros);
+           await _livrosCollection.ReplaceOneAsync(x => x.id == id, livros);
         public async Task RemoveAsync(string id) =>
-            await _livrosCollection.DeleteOneAsync(x => x.Id == id);
+            await _livrosCollection.DeleteOneAsync(x => x.id == id);
     }
 }

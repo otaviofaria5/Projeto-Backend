@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Projeto_Backend.Services;
 using Projeto_Backend.Model;
-using static Projeto_Backend.Services.UsuariosService;
 
 
 namespace Projeto_Backend.Controllers
