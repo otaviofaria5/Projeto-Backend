@@ -20,6 +20,8 @@ namespace Model
 
         public string? descricao { get; set; }
 
+        [BsonDefaultValue(true)]
+        public bool Disponivel { get; set; } = true;
 
     }
 }

@@ -7,16 +7,16 @@ namespace Model
 {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string? id { get; set; }
         [BsonElement("livroId")]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string livroId { get; set; }
+        public string? livroId { get; set; }
         [BsonElement("usuarioId")]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string usuarioId { get; set; }
+        public string? usuarioId { get; set; }
 
-        public DateTimeOffset dataEmprestimo { get; set; }
-        public DateTimeOffset dataDevolucaoPrevista { get; set; }
-       public DateTimeOffset dataDevolucaoReal {  get; set; }
+        public DateTimeOffset? dataEmprestimo { get; set; }
+        public DateTimeOffset? dataDevolucaoPrevista { get; set; }
+       public DateTimeOffset? dataDevolucaoReal {  get; set; }
     }
 }

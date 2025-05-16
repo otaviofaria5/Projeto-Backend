@@ -18,7 +18,7 @@ namespace Services
         public async Task<List<Avaliacoes>> GetAsync() =>
             await _avaliacoesCollection.Find(x => true).ToListAsync();
         public async Task<Avaliacoes> GetAsync(string id) =>
-            await _avaliacoesCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            await _avaliacoesCollection.Find(x => x.id == id).FirstOrDefaultAsync();
 
     }
 }

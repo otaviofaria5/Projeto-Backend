@@ -6,14 +6,9 @@ namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmprestimosController : ControllerBase
+    public class EmprestimosController(EmprestimosServices emprestimosServices) : ControllerBase
     {
-        private readonly EmprestimosServices _emprestimosServices;
-
-        public EmprestimosController(EmprestimosServices emprestimosServices)
-        {
-            _emprestimosServices = emprestimosServices;
-        }
+        private readonly EmprestimosServices _emprestimosServices = emprestimosServices;
 
         [HttpGet]
         public async Task<ActionResult<List<Emprestimos>>> GetEmprestimos()
@@ -23,9 +18,9 @@ namespace Controllers
         }
 
         [HttpGet("/{usuarioId}")]
-        public async Task<ActionResult<List<Emprestimos>>> GetPorUsuario(string usuarioId)
+        public async Task<ActionResult<List<Emprestimos>>> GetPorUsuario(string usuario)
         {
-            var emprestimos = await _emprestimosServices.GetPorUsuarioAsync(usuarioId);
+            var emprestimos = await _emprestimosServices.GetPorUsuarioAsync(usuario);
             return Ok(emprestimos);
         }
 
@@ -36,15 +31,22 @@ namespace Controllers
             return CreatedAtAction(nameof(GetEmprestimos), new { id = emprestimos.id }, emprestimos);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RegristrarEmprestimo(string usuarioId, string livroId)
+        [HttpPost("registrar")]
+        public async Task<IActionResult> RegistrarEmprestimo(string nome, string titulo)
         {
-            var emprestimos = await _emprestimosServices.RegistrarEmprestimoAsync(usuarioId, livroId);
+            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(titulo))
+            {
+                return BadRequest("Nome do usuário e título do livro são obrigatórios.");
+            }
 
-            if (emprestimos == null)
-                return BadRequest("Usuário ou livro inválido, ou o livro já está emprestado.");
+            var sucesso = await _emprestimosServices.RegistrarEmprestimoAsync(nome, titulo);
 
-            return Ok(emprestimos);
+            if (!sucesso)
+            {
+                return NotFound("Não foi possível registrar o empréstimo. Verifique se o livro está disponível ou se os dados estão corretos.");
+            }
+
+            return Ok("Empréstimo registrado com sucesso.");
         }
 
         [HttpPut("{id}")]
