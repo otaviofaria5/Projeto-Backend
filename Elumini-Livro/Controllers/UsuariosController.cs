@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Projeto_Backend.Services;
-using Projeto_Backend.Model;
+using Model;
+using Services;
 
 
-namespace Projeto_Backend.Controllers
+namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -31,7 +31,7 @@ namespace Projeto_Backend.Controllers
         [HttpPut]
         public async Task<Usuario> PutUsuario(string id, Usuario usuario)
         {
-            await _usuarioServices.UpdateAsync(id, usuario);
+            await _usuarioServices.EditarAsync(id, usuario);
             return usuario;
         }
 

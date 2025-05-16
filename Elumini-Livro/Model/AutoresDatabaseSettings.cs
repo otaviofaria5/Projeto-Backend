@@ -1,4 +1,4 @@
-﻿namespace Projeto_Backend.Model
+﻿namespace Model
 {
     public class AutoresDatabaseSettings
 {

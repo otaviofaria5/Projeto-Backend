@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Projeto_Backend.Model
+namespace Model
 {
     public class Livros
     {

@@ -1,8 +1,8 @@
-﻿using Projeto_Backend.Model;
+﻿using Model;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace Projeto_Backend.Services
+namespace Services
 {
     public class LivrosServices
     {

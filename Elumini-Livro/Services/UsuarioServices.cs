@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using Projeto_Backend.Model;
+using Model;
 
-namespace Projeto_Backend.Services
+namespace Services
 {
         public class UsuarioServices
         {
@@ -17,8 +17,11 @@ namespace Projeto_Backend.Services
                     (usuarioServices.Value.CollectionName);
             }
 
-            public async Task<List<Usuario>> GetAsync() =>
-                await _usuarioCollection.Find(x => true).ToListAsync();
+        public async Task<List<Usuario>> GetAsync()
+        {
+            await _usuarioCollection.Find(x => true).ToListAsync();
+            return await _usuarioCollection.Find(x => true).ToListAsync();
+        }
 
             public async Task<Usuario> GetAsync(string id) =>
                 await _usuarioCollection.Find(x => x.id == id).FirstOrDefaultAsync();
@@ -26,11 +29,11 @@ namespace Projeto_Backend.Services
             public async Task CreateAsync(Usuario usuario) =>
                 await _usuarioCollection.InsertOneAsync(usuario);
 
-            public async Task UpdateAsync(string id, Usuario usuario) =>
+            public async Task EditarAsync(string id, Usuario usuario) =>
                 await _usuarioCollection.ReplaceOneAsync(x => x.id == id, usuario);
 
-            public async Task RemoveAsync(string id) =>
-                await _usuarioCollection.DeleteOneAsync(x => x.id == id);
+            public async Task RemoveAsync(string id) 
+            =>  await _usuarioCollection.DeleteOneAsync(x => x.id == id);
         }
     
 

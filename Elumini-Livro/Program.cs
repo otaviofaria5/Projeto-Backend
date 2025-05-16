@@ -1,5 +1,5 @@
-using Projeto_Backend.Model;
-using Projeto_Backend.Services;
+using Model;
+using Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +14,20 @@ builder.Services.Configure<UsuarioDatabaseSettings>
 
 builder.Services.AddSingleton<UsuarioServices>();
 
+builder.Services.Configure<AutoresDatabaseSettings>
+    (builder.Configuration.GetSection("DevNetStoreDatabaseAutores"));
+
+builder.Services.AddSingleton<AutoresServices>();
+
+builder.Services.Configure<EmprestimosDatabaseSettings>
+    (builder.Configuration.GetSection("DevNetStoreDatabaseEmprestimos"));
+
+builder.Services.AddSingleton<EmprestimosServices>();
+
+builder.Services.Configure<AvaliacoesDatabaseSettings>
+    (builder.Configuration.GetSection("DevNetStoreDatabaseAvaliacoes"));
+
+builder.Services.AddSingleton<AvaliacoesServices>();
 
 
 

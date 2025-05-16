@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-namespace Projeto_Backend.Model
+namespace Model
 {
     public class Usuario
     {
