@@ -13,31 +13,11 @@ namespace Controllers
         {
             _livrosServices = livrosServices;
         }
-   
+
         [HttpGet]
         public async Task<List<Livros>> GetStatus()
-            => await _livrosServices.GetAsync();
-        [HttpPost]
-        public async Task<Livros>PostStatus(Livros livros)
         {
-            await _livrosServices.CreateAsync(livros);
-            return livros;
+          return await _livrosServices.GetAsync();
         }
-
-        [HttpPut]
-        public async Task<Livros> PutStatus(string id, Livros livros)
-        {
-            await _livrosServices.UpdateAsync(id, livros);
-            return livros;
-        }
-
-        [HttpDelete]
-        public async Task<Livros> DeleteLivros(string id, Livros livros)
-        {
-            await _livrosServices.RemoveAsync(id);
-            return livros;
-
-        }
-
     }
 }

@@ -26,11 +26,11 @@ namespace Services
         {
             var usuario = new Usuario
             {
-                id = Guid.NewGuid().ToString(),
                 nome = nome,
                 email = email,
                 endereco = endereco
             };
+
             await _usuarioCollection.InsertOneAsync(usuario);
             return usuario;
         }

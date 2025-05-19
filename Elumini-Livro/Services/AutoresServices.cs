@@ -14,10 +14,10 @@ namespace Services
             _autoresCollection = mongoDatabase.GetCollection<Autores>(autoresService.Value.CollectionName);
         }
 
-        public async Task<List<Autores>> GetAsync() =>
-            await _autoresCollection.Find(x => true).ToListAsync();
+        public async Task<List<Autores>> GetAsync()
+        {
+         return await _autoresCollection.Find(x => true).ToListAsync();
+        }
 
-        public async Task<Autores> GetAsync(string id) =>
-            await _autoresCollection.Find(x => x.id == id).FirstOrDefaultAsync();
     }
 }

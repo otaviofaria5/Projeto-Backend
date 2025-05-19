@@ -28,8 +28,8 @@ namespace Controllers
             var usuario = await _usuarioServices.CadastrarUsuarioAsync(nome, email, endereco);
             return Ok(usuario);
         }
-        // Faltar Testar CadastrarUsuario
-        [HttpPut("{id}")]
+        // concluido 
+        [HttpPut]
         public async Task<IActionResult> AtualizarUsuario(string id, string nome, string email, string endereco)
         {
             var usuario = await _usuarioServices.AtualizarUsuarioAsync(id, nome, email, endereco);
@@ -40,9 +40,9 @@ namespace Controllers
             return Ok(usuario);
         }
 
-        // Faltar Testar AtualizarUsuario
+        // concluido 
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> ExcluirUsuario(string id)
         {
             var sucesso = await _usuarioServices.ExcluirUsuarioAsync(id);
@@ -50,7 +50,7 @@ namespace Controllers
             return NoContent();
         }
 
-        // Faltar Testar ExcluirUsuario
+        // concluido
 
     }
 }

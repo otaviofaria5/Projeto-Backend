@@ -6,9 +6,14 @@ namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmprestimosController(EmprestimosServices emprestimosServices) : ControllerBase
+    public class EmprestimosController : ControllerBase
     {
-        private readonly EmprestimosServices _emprestimosServices = emprestimosServices;
+        private readonly EmprestimosServices _emprestimosServices;
+
+        public EmprestimosController(EmprestimosServices emprestimosServices)
+        {
+            _emprestimosServices = emprestimosServices;
+        }
 
         [HttpGet]
         public async Task<ActionResult<List<Emprestimos>>> GetEmprestimos()
@@ -16,70 +21,68 @@ namespace Controllers
             var emprestimos = await _emprestimosServices.GetAsync();
             return Ok(emprestimos);
         }
-
-        // concluido 
-
-        [HttpGet("historico/{usuarioId}")]
-        public async Task<IActionResult> ObterHistoricoEmprestimos(string usuarioId)
+        // Concluido
+        [HttpGet("historico")]
+        public async Task<IActionResult> ObterHistoricoPorNome(string nome)
         {
-            var historico = await _emprestimosServices.ObterHistoricoEmprestimosAsync(usuarioId);
+            var historico = await _emprestimosServices.ObterHistoricoPorNomeAsync(nome);
             var resultado = historico.Select(e => new
             {
-                id = e.id,
-                livro = e.livroId,
-                dataEmprestimo = e.dataEmprestimo,
-                dataPrevistaDevolucao = e.dataDevolucaoPrevista,
-                dataDevolucao = e.dataDevolucaoReal
+                Livro = e.livroId, 
+                e.dataEmprestimo,
+                DataPrevistaDevolucao = e.dataDevolucaoPrevista,
+                e.dataDevolucaoReal
             });
             return Ok(resultado);
         }
+        // Concluido
 
-        // falta testar buscar historico de emprestimos por usuarioId
         [HttpGet("emprestados")]
         public async Task<IActionResult> ObterLivrosEmprestados()
         {
             var emprestados = await _emprestimosServices.ObterLivrosEmprestadosAsync();
             return Ok(emprestados);
         }
-        // falta testar o retorno do livro emprestado, se ele está emprestado ou não.
+
+        // Concluido
 
         [HttpPost("registrar")]
         public async Task<IActionResult> RegistrarEmprestimo(string nome, string titulo)
         {
-            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(titulo))
+            var resultado = await _emprestimosServices.RegistrarEmprestimoAsync(nome, titulo);
+            if (resultado == null)
             {
-                return BadRequest("Nome do usuário e título do livro são obrigatórios.");
+                return NotFound("Usuário ou livro não encontrado.");
             }
-
-            var sucesso = await _emprestimosServices.RegistrarEmprestimoAsync(nome, titulo);
-
-            if (sucesso == null || sucesso.ToLower() != "true")
-            {
-                return NotFound("Não foi possível registrar o empréstimo. Verifique se o livro está disponível ou se os dados estão corretos.");
-            }
-
-            return Ok("Empréstimo registrado com sucesso.");
+            return Ok(new { mensagem = resultado });
         }
-        // Faltar testar o regristro do livro 
-        [HttpPost("devolucao/{id}")]
-        public async Task<IActionResult> RegistrarDevolucao(int id)
+        [HttpPost("devolverPorTitulo")]
+        public async Task<IActionResult> RegistrarDevolucao(string titulo)
         {
-            if (id <= 0)
-            {
-                return BadRequest("O ID do empréstimo é obrigatório e deve ser válido.");
-            }
-
-            var sucesso = await _emprestimosServices.RegistrarDevolucaoAsync(id);
-            if (sucesso == null || sucesso.ToLower() != "true")
-            {
-                return NotFound("Não foi possível registrar a devolução. Verifique se o empréstimo existe ou se os dados estão corretos.");
-            }
-
-            return Ok("Devolução registrada com sucesso.");
+            var resultado = await _emprestimosServices.RegistrarDevolucaoPorTituloAsync(titulo);
+            return Ok(new { mensagem = resultado });
         }
-        // falta testar a devolução do livro 
 
-        [HttpDelete("{id}")]
+        // duvida pendente com Danielle
+
+
+
+        [HttpPost("devolver/id")]
+        public async Task<IActionResult> RegistrarDevolucaoPorId(string emprestimoId)
+        {
+            var resultado = await _emprestimosServices.RegistrarDevolucaoAsync(emprestimoId);
+
+            if (resultado == "Empréstimo inválido ou já devolvido.")
+            {
+                return NotFound(new { mensagem = resultado });
+            }
+
+            return Ok(new { mensagem = resultado });
+        }
+
+        // duvida pendente com Danielle
+
+        [HttpDelete]
         public async Task<IActionResult> DeleteEmprestimos(string id)
         {
             var existingEmprestimo = await _emprestimosServices.GetAsync();
@@ -87,9 +90,10 @@ namespace Controllers
             {
                 return NotFound();
             }
-            await _emprestimosServices.RemoveAsync(id);
+            await _emprestimosServices.ExlcuirEmprestimosAsync(id);
             return NoContent();
         }
-        // falta testar remoção do emprestimos.
+
+        // Concluido
     }
 }

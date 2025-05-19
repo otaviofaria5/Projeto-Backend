@@ -16,15 +16,10 @@ namespace Services
             _livrosCollection = mongoDatabase.GetCollection<Livros>(livroService.Value.CollectionName);
         }
 
-        public async Task<List<Livros>> GetAsync() =>
-          await _livrosCollection.Find(x => true).ToListAsync();
-        public async Task<Livros> GetAsync(string id) =>
-           await _livrosCollection.Find(x => x.id == id).FirstOrDefaultAsync();
-        public async Task CreateAsync(Livros livros) =>
-            await _livrosCollection.InsertOneAsync(livros);
-        public async Task UpdateAsync(string id, Livros livros) =>
-           await _livrosCollection.ReplaceOneAsync(x => x.id == id, livros);
-        public async Task RemoveAsync(string id) =>
-            await _livrosCollection.DeleteOneAsync(x => x.id == id);
+        public async Task<List<Livros>> GetAsync()
+        {
+            return await _livrosCollection.Find(x => true).ToListAsync();
+        
+        }
     }
 }

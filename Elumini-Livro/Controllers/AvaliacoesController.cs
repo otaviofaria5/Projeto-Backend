@@ -13,6 +13,8 @@ namespace Controllers
 
         [HttpGet]
         public async Task<List<Avaliacoes>> GetAvaliacoes()
-            => await _avaliacoesServices.GetAsync();
+        {
+            return await _avaliacoesServices.GetAsync();
+        }
     }
 }

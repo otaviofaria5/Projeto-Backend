@@ -15,10 +15,10 @@ namespace Services
             _avaliacoesCollection = mongoDatabase.GetCollection<Avaliacoes>(avaliacoesService.Value.CollectionName);
         }
 
-        public async Task<List<Avaliacoes>> GetAsync() =>
-            await _avaliacoesCollection.Find(x => true).ToListAsync();
-        public async Task<Avaliacoes> GetAsync(string id) =>
-            await _avaliacoesCollection.Find(x => x.id == id).FirstOrDefaultAsync();
+        public async Task<List<Avaliacoes>> GetAsync()
+        { 
+           return await _avaliacoesCollection.Find(x => true).ToListAsync();
+        }
 
     }
 }
