@@ -18,30 +18,39 @@ namespace Controllers
 
         [HttpGet]
         public async Task<List<Usuario>> GetUsuario()
-            => await _usuarioServices.GetAsync();
-
+        { 
+            return await _usuarioServices.ListarUsuarioAsync();
+        }
+        // Concluido 
         [HttpPost]
-        public async Task<Usuario> PostUsuario(Usuario usuario)
+        public async Task<IActionResult> CadastrarUsuario(string nome, string email, string endereco)
         {
-            await _usuarioServices.CreateAsync(usuario);
-
-            return usuario;
+            var usuario = await _usuarioServices.CadastrarUsuarioAsync(nome, email, endereco);
+            return Ok(usuario);
+        }
+        // Faltar Testar CadastrarUsuario
+        [HttpPut("{id}")]
+        public async Task<IActionResult> AtualizarUsuario(string id, string nome, string email, string endereco)
+        {
+            var usuario = await _usuarioServices.AtualizarUsuarioAsync(id, nome, email, endereco);
+            if (usuario == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
+            return Ok(usuario);
         }
 
-        [HttpPut]
-        public async Task<Usuario> PutUsuario(string id, Usuario usuario)
+        // Faltar Testar AtualizarUsuario
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> ExcluirUsuario(string id)
         {
-            await _usuarioServices.EditarAsync(id, usuario);
-            return usuario;
+            var sucesso = await _usuarioServices.ExcluirUsuarioAsync(id);
+            if (!sucesso) return NotFound("Usuário não encontrado.");
+            return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<Usuario> DeleteUsuario(string id, Usuario usuario)
-        {
-            await _usuarioServices.RemoveAsync(id);
-            return usuario;
-
-        }
+        // Faltar Testar ExcluirUsuario
 
     }
 }
