@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using Microsoft.AspNetCore.Mvc;
 namespace Services
 {
-    public class AutoresServices : ControllerBase // Inherit from ControllerBase to use BadRequest and ModelState
+    public class AutoresServices : ControllerBase
     {
         private readonly IMongoCollection<Autores> _autoresCollection;
 
@@ -20,6 +20,7 @@ namespace Services
             return await _autoresCollection.Find(x => true).ToListAsync();
         }
 
+        // Concluido
         public async Task<IActionResult> CriarAutoresAsync(string nome, string biografia, string nacionalidade)
         {
             var autores = new Autores
@@ -33,6 +34,7 @@ namespace Services
             return Ok(autores);
         }
 
+        // Concluido
         public async Task<Autores?> AtualizarAutoresAsync(string id, string nome, string biografia, string nacionalidade)
         {
             var autores = await _autoresCollection.Find(x => x.id == id).FirstOrDefaultAsync();
@@ -43,7 +45,7 @@ namespace Services
             await _autoresCollection.ReplaceOneAsync(x => x.id == id, autores);
             return autores;
         }
-
+        // Concluido
         public async Task<bool> ExcluirAutoresAsync(string id)
         {
             var autores = await _autoresCollection.Find(x => x.id == id).FirstOrDefaultAsync();
@@ -51,5 +53,7 @@ namespace Services
             await _autoresCollection.DeleteOneAsync(x => x.id == id);
             return true;
         }
+
+        //Concluido
     }
 }

@@ -109,8 +109,9 @@ namespace Services
                 return "Empréstimo não encontrado ou livro já devolvido.";
 
             var livro = await _livrosCollection
-                .Find(l => l.id == emprestimo.livroId && l.titulo.ToLower() == tituloLivro.ToLower())
-                .FirstOrDefaultAsync();
+             .Find(l => l.id == emprestimo.livroId && l.titulo != null && l.titulo.ToLower() == tituloLivro.ToLower())
+             .FirstOrDefaultAsync();
+
 
             if (livro == null)
                 return "Livro associado ao empréstimo não encontrado.";
