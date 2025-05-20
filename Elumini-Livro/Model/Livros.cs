@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
@@ -14,9 +15,12 @@ namespace Model
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string? autorId { get; set; }
 
+        [Required(ErrorMessage = "O Genero é obrigatória.")]
         public string? genero { get; set; }
 
+        [Required(ErrorMessage = "O Ibsn é obrigatória.")]
         public string? isbn { get; set; }
+        [Required(ErrorMessage = "A Descricão é obrigatória.")]
 
         public string? descricao { get; set; }
 

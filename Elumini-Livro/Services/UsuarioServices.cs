@@ -35,13 +35,13 @@ namespace Services
             return usuario;
         }
 
-        public async Task<Usuario?> AtualizarUsuarioAsync(string id, string novoNome, string novoEmail, string novoEndereco)
+        public async Task<Usuario?> AtualizarUsuarioAsync(string id, string nome, string email, string endereco)
         {
             var usuario = await _usuarioCollection.Find(x => x.id == id).FirstOrDefaultAsync();
             if (usuario == null) return null;
-            usuario.nome = novoNome;
-            usuario.email = novoEmail;
-            usuario.endereco = novoEndereco;
+            usuario.nome = nome;
+            usuario.email = email;
+            usuario.endereco = endereco;
             await _usuarioCollection.ReplaceOneAsync(x => x.id == id, usuario);
             return usuario;
         }

@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
 using Model;
 using MongoDB.Driver;
-
+using Microsoft.AspNetCore.Mvc;
 namespace Services
 {
-    public class AutoresServices
-{
-     private readonly IMongoCollection<Autores> _autoresCollection;
+    public class AutoresServices : ControllerBase // Inherit from ControllerBase to use BadRequest and ModelState
+    {
+        private readonly IMongoCollection<Autores> _autoresCollection;
+
         public AutoresServices(IOptions<AutoresDatabaseSettings> autoresService)
         {
             var mongoClient = new MongoClient(autoresService.Value.ConnectionString);
@@ -16,8 +17,39 @@ namespace Services
 
         public async Task<List<Autores>> GetAsync()
         {
-         return await _autoresCollection.Find(x => true).ToListAsync();
+            return await _autoresCollection.Find(x => true).ToListAsync();
         }
 
+        public async Task<IActionResult> CriarAutoresAsync(string nome, string biografia, string nacionalidade)
+        {
+            var autores = new Autores
+            {
+                nome = nome,
+                biografia = biografia,
+                nacionalidade = nacionalidade
+            };
+
+            await _autoresCollection.InsertOneAsync(autores);
+            return Ok(autores);
+        }
+
+        public async Task<Autores?> AtualizarAutoresAsync(string id, string nome, string biografia, string nacionalidade)
+        {
+            var autores = await _autoresCollection.Find(x => x.id == id).FirstOrDefaultAsync();
+            if (autores == null) return null;
+            autores.nome = nome;
+            autores.biografia = biografia;
+            autores.nacionalidade = nacionalidade;
+            await _autoresCollection.ReplaceOneAsync(x => x.id == id, autores);
+            return autores;
+        }
+
+        public async Task<bool> ExcluirAutoresAsync(string id)
+        {
+            var autores = await _autoresCollection.Find(x => x.id == id).FirstOrDefaultAsync();
+            if (autores == null) return false;
+            await _autoresCollection.DeleteOneAsync(x => x.id == id);
+            return true;
+        }
     }
 }

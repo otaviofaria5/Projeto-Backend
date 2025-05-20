@@ -29,13 +29,29 @@ builder.Services.Configure<AvaliacoesDatabaseSettings>
 
 builder.Services.AddSingleton<AvaliacoesServices>();
 
-
-
-
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTodos", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+var app = builder.Build();
+
+app.UseCors("PermitirTodos");
+
+
+
+
+
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
