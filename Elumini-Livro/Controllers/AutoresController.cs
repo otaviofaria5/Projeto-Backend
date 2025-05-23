@@ -17,14 +17,31 @@ namespace Controllers
 
         [HttpGet]
         public async Task<List<Autores>> GetAutores()
-            => await _autoresServices.GetAsync();
+        {
+        return await _autoresServices.GetAsync();
+        }
+        //Concluido
+        [HttpGet("pesquisar")]
+        public async Task<IActionResult> PesquisarAutores(string nome, string biografia, string nacionalidade)
+        {
+            var autores = await _autoresServices.PesquisarAutoresAsync(nome, nacionalidade, biografia);
+            if (autores != null)
+            {
 
+                return Ok(autores);
+
+            }
+            return BadRequest("Nenhum autor encontrado");
+
+        }
+        // Falta testar
         [HttpPost]
         public async Task<IActionResult> CriarAutores(string nome, string biografia, string nacionalidade)
         {
             var novoAutores = await _autoresServices.CriarAutoresAsync(nome, biografia, nacionalidade);
             return Ok(novoAutores);
         }
+        //Concluido
 
         [HttpPut]
         public async Task<IActionResult> AtualizarAutores(string id ,string nome, string biografia, string nacionalidade)
@@ -39,7 +56,7 @@ namespace Controllers
 
             return Ok(autoresAtualizado);
         }
-
+        //Concluido
         [HttpDelete]
         public async Task<IActionResult> ExcluirAutores(string id)
         {
@@ -50,5 +67,6 @@ namespace Controllers
             }
             return Ok(autoresDeletado);
         }
+        //Concluido
     }
 }
