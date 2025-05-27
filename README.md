@@ -37,15 +37,20 @@ Este projeto é uma API REST construída com ASP.NET Core e MongoDB que permite 
   - AvaliacoesController.cs
 
 /Models
-  - Livro.cs
+  - Autores.cs
+  - AutoresDatabaseSettings.cs
+  - Avaliacoes.cs
+  - AvaliacoesDatabaseSettings.cs
+  - Emprestimos.cs
+  - EmprestimosDatabaseSettings.cs
+  - Livros.cs
+  - LivrosDatabaseSettings.cs
   - Usuario.cs
-  - Autor.cs
-  - Emprestimo.cs
-  - Avaliacao.cs
+  - UsuarioDatabaseSettings
 
 /Services
-  - LivroService.cs
-  - UsuarioService.cs
-  - AutorService.cs
-  - EmprestimoService.cs
+  - AutoresServices.cs
   - AvaliacaoService.cs
+  - LivrosServices.cs
+  - EmprestimosServices.cs
+  - UsuariosServices.cs
