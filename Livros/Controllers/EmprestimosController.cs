@@ -56,16 +56,15 @@ namespace Controllers
             }
             return Ok(new { mensagem = resultado });
         }
+        //CONLCUIDO
+
         [HttpPost("devolverPorTitulo")]
         public async Task<IActionResult> RegistrarDevolucao(string titulo)
         {
             var resultado = await _emprestimosServices.RegistrarDevolucaoPorTituloAsync(titulo);
             return Ok(new { mensagem = resultado });
         }
-
         // duvida pendente com Danielle
-
-
 
         [HttpPost("devolver/id")]
         public async Task<IActionResult> RegistrarDevolucaoPorId(string emprestimoId)

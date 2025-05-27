@@ -47,7 +47,6 @@ var app = builder.Build();
 app.UseCors("PermitirTodos");
 
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

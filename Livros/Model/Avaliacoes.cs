@@ -20,7 +20,6 @@ namespace Model
         [Required(ErrorMessage = "O comentário é obrigatório.")]
         public string? comentario { get; set; }
 
-        #pragma warning disable IDE1006
 
     }
 }
