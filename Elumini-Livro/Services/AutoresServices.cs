@@ -20,20 +20,12 @@ namespace Services
             return await _autoresCollection.Find(x => true).ToListAsync();
         }
 
-        public async Task<List<Autores>> PesquisarAutoresAsync(string nome, string biografia, string nacionalidade)
+        public async Task<List<Autores>> PesquisarAutoresAsync(string nome)
         {
             var filter = Builders<Autores>.Filter.Empty;
             if (!string.IsNullOrEmpty(nome))
             {
                 filter &= Builders<Autores>.Filter.Regex(x => x.nome, new MongoDB.Bson.BsonRegularExpression(nome, "i"));
-            }
-            if (!string.IsNullOrEmpty(biografia))
-            {
-                filter &= Builders<Autores>.Filter.Regex(x => x.biografia, new MongoDB.Bson.BsonRegularExpression(biografia, "i"));
-            }
-            if (!string.IsNullOrEmpty(nacionalidade))
-            {
-                filter &= Builders<Autores>.Filter.Eq(x => x.nacionalidade, nacionalidade);
             }
             return await _autoresCollection.Find(filter).ToListAsync();
         }

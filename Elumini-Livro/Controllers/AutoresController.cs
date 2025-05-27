@@ -20,11 +20,12 @@ namespace Controllers
         {
         return await _autoresServices.GetAsync();
         }
-        //Concluido
+        //CONLCUIDO
+
         [HttpGet("pesquisar")]
-        public async Task<IActionResult> PesquisarAutores(string nome, string biografia, string nacionalidade)
+        public async Task<IActionResult> PesquisarAutores(string nome)
         {
-            var autores = await _autoresServices.PesquisarAutoresAsync(nome, nacionalidade, biografia);
+            var autores = await _autoresServices.PesquisarAutoresAsync(nome);
             if (autores != null)
             {
 
@@ -34,14 +35,15 @@ namespace Controllers
             return BadRequest("Nenhum autor encontrado");
 
         }
-        // Falta testar
+        //CONLCUIDO
+
         [HttpPost]
         public async Task<IActionResult> CriarAutores(string nome, string biografia, string nacionalidade)
         {
             var novoAutores = await _autoresServices.CriarAutoresAsync(nome, biografia, nacionalidade);
             return Ok(novoAutores);
         }
-        //Concluido
+        //CONLCUIDO
 
         [HttpPut]
         public async Task<IActionResult> AtualizarAutores(string id ,string nome, string biografia, string nacionalidade)
@@ -56,7 +58,8 @@ namespace Controllers
 
             return Ok(autoresAtualizado);
         }
-        //Concluido
+        //CONLCUIDO
+
         [HttpDelete]
         public async Task<IActionResult> ExcluirAutores(string id)
         {
@@ -67,6 +70,6 @@ namespace Controllers
             }
             return Ok(autoresDeletado);
         }
-        //Concluido
+        //CONLCUIDO
     }
 }
