@@ -25,7 +25,7 @@ namespace Controllers
         [HttpGet("pesquisar")]
         public async Task<IActionResult> PesquisarAutores(string nome)
         {
-            var autores = await _autoresServices.PesquisarAutoresAsync(nome);
+            var autores = await _autoresServices.PesquisarAutorAsync(nome);
             if (autores != null)
             {
 
@@ -38,18 +38,18 @@ namespace Controllers
         //CONLCUIDO
 
         [HttpPost]
-        public async Task<IActionResult> CriarAutores(string nome, string biografia, string nacionalidade)
+        public async Task<IActionResult> CadastrarAutor(string nome, string biografia, string nacionalidade)
         {
-            var novoAutores = await _autoresServices.CriarAutoresAsync(nome, biografia, nacionalidade);
+            var novoAutores = await _autoresServices.CadastrarAutorAsync(nome, biografia, nacionalidade);
             return Ok(novoAutores);
         }
         //CONLCUIDO
 
         [HttpPut]
-        public async Task<IActionResult> AtualizarAutores(string id ,string nome, string biografia, string nacionalidade)
+        public async Task<IActionResult> AtualizarAutor(string id ,string nome, string biografia, string nacionalidade)
         {
 
-            var autoresAtualizado = await _autoresServices.AtualizarAutoresAsync(id, nome, biografia, nacionalidade);
+            var autoresAtualizado = await _autoresServices.AtualizarAutorAsync(id, nome, biografia, nacionalidade);
 
             if (autoresAtualizado == null)
             {
@@ -61,13 +61,14 @@ namespace Controllers
         //CONLCUIDO
 
         [HttpDelete]
-        public async Task<IActionResult> ExcluirAutores(string id)
+        public async Task<IActionResult> ExcluirAutor(string id)
         {
-            var autoresDeletado = await _autoresServices.ExcluirAutoresAsync(id);
+            var autoresDeletado = await _autoresServices.ExcluirAutorAsync(id);
             if (!autoresDeletado)
             {
                 return NotFound("Autor não encontrado.");
             }
+
             return Ok(autoresDeletado);
         }
         //CONLCUIDO

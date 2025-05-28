@@ -20,7 +20,7 @@ namespace Services
             return await _autoresCollection.Find(x => true).ToListAsync();
         }
 
-        public async Task<List<Autores>> PesquisarAutoresAsync(string nome)
+        public async Task<List<Autores>> PesquisarAutorAsync(string nome)
         {
             var filter = Builders<Autores>.Filter.Empty;
             if (!string.IsNullOrEmpty(nome))
@@ -29,7 +29,8 @@ namespace Services
             }
             return await _autoresCollection.Find(filter).ToListAsync();
         }
-        public async Task<IActionResult> CriarAutoresAsync(string nome, string biografia, string nacionalidade)
+
+        public async Task<IActionResult> CadastrarAutorAsync(string nome, string biografia, string nacionalidade)
         {
             var autores = new Autores
             {
@@ -42,22 +43,32 @@ namespace Services
             return Ok(autores);
         }
 
-        public async Task<Autores?> AtualizarAutoresAsync(string id, string nome, string biografia, string nacionalidade)
+        public async Task<IActionResult> AtualizarAutorAsync(string id, string nome, string biografia, string nacionalidade)
         {
-            var autores = await _autoresCollection.Find(x => x.id == id).FirstOrDefaultAsync();
-            if (autores == null) return null;
+            var autores = await _autoresCollection
+                .Find(x => x.id == id)
+                .FirstOrDefaultAsync();
+
+            if (autores == null) return NotFound();
+
             autores.nome = nome;
             autores.biografia = biografia;
             autores.nacionalidade = nacionalidade;
             await _autoresCollection.ReplaceOneAsync(x => x.id == id, autores);
-            return autores;
+           
+            return Ok(autores);
         }
 
-        public async Task<bool> ExcluirAutoresAsync(string id)
+        public async Task<bool> ExcluirAutorAsync(string id)
         {
-            var autores = await _autoresCollection.Find(x => x.id == id).FirstOrDefaultAsync();
+            var autores = await _autoresCollection
+                .Find(x => x.id == id)
+                .FirstOrDefaultAsync();
+
             if (autores == null) return false;
+           
             await _autoresCollection.DeleteOneAsync(x => x.id == id);
+            
             return true;
         }
 
