@@ -21,36 +21,45 @@ namespace Controllers
         { 
             return await _usuarioServices.ListarUsuarioAsync();
         }
-        // Concluido 
+
+        //CONCLUIDO 
+
         [HttpPost]
         public async Task<IActionResult> CadastrarUsuario(string nome, string email, string endereco)
         {
             var usuario = await _usuarioServices.CadastrarUsuarioAsync(nome, email, endereco);
+
             return Ok(usuario);
         }
-        // concluido 
+
+        //CONCLUIDO
+
         [HttpPut]
         public async Task<IActionResult> AtualizarUsuario(string id, string nome, string email, string endereco)
         {
             var usuario = await _usuarioServices.AtualizarUsuarioAsync(id, nome, email, endereco);
+            
             if (usuario == null)
             {
                 return NotFound("Usuário não encontrado.");
             }
+            
             return Ok(usuario);
         }
 
-        // concluido 
+        //CONCLUIDO
 
         [HttpDelete]
         public async Task<IActionResult> ExcluirUsuario(string id)
         {
             var sucesso = await _usuarioServices.ExcluirUsuarioAsync(id);
+           
             if (!sucesso) return NotFound("Usuário não encontrado.");
+            
             return NoContent();
         }
 
-        // concluido
+        //CONCLUIDO
 
     }
 }
