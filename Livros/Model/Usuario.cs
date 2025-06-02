@@ -8,12 +8,16 @@ namespace Model
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? id { get; set; }
+        [BsonElement("id")]
+        public string? Id { get; set; }
         [Required(ErrorMessage = "O Nome é Obrigatória.")]
-        public string? nome { get; set; }
+        [BsonElement("nome")]
+        public string? Nome { get; set; }
         [Required(ErrorMessage = "O Email é Obrigatório.")]
-        public string? email { get; set; }
+        [BsonElement("email")]
+        public string? Email { get; set; }
         [Required(ErrorMessage = "O Endereço é Obrigatório.")]
-        public string? endereco { get; set; }
+        [BsonElement("endereco")]
+        public string? Endereco { get; set; }
     }
 }

@@ -7,59 +7,45 @@ namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class UsuarioController(UsuarioServices usuarioServices) : ControllerBase
     {
-        private readonly UsuarioServices _usuarioServices;
-
-        public UsuarioController(UsuarioServices usuarioServices)
-        {
-            _usuarioServices = usuarioServices;
-        }
+        private readonly UsuarioServices _usuarioServices = usuarioServices;
 
         [HttpGet]
         public async Task<List<Usuario>> GetUsuario()
-        { 
+        {
             return await _usuarioServices.ListarUsuarioAsync();
         }
 
-        //CONCLUIDO 
-
         [HttpPost]
-        public async Task<IActionResult> CadastrarUsuario(string nome, string email, string endereco)
+        public async Task<IActionResult> CadastrarUsuario(string Nome, string Email, string Endereco)
         {
-            var usuario = await _usuarioServices.CadastrarUsuarioAsync(nome, email, endereco);
+            var usuario = await _usuarioServices.CadastrarUsuarioAsync(Nome, Email, Endereco);
 
             return Ok(usuario);
         }
 
-        //CONCLUIDO
-
         [HttpPut]
-        public async Task<IActionResult> AtualizarUsuario(string id, string nome, string email, string endereco)
+        public async Task<IActionResult> AtualizarUsuario(string Id, string Nome, string Email, string Endereco)
         {
-            var usuario = await _usuarioServices.AtualizarUsuarioAsync(id, nome, email, endereco);
-            
+            var usuario = await _usuarioServices.AtualizarUsuarioAsync(Id, Nome, Email, Endereco);
+
             if (usuario == null)
             {
                 return NotFound("Usuário não encontrado.");
             }
-            
+
             return Ok(usuario);
         }
 
-        //CONCLUIDO
-
         [HttpDelete]
-        public async Task<IActionResult> ExcluirUsuario(string id)
+        public async Task<IActionResult> ExcluirUsuario(string Id)
         {
-            var sucesso = await _usuarioServices.ExcluirUsuarioAsync(id);
-           
+            var sucesso = await _usuarioServices.ExcluirUsuarioAsync(Id);
+
             if (!sucesso) return NotFound("Usuário não encontrado.");
-            
+
             return NoContent();
         }
-
-        //CONCLUIDO
-
     }
 }

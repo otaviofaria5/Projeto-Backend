@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Services
 {
-    public class UsuarioServices
+    public class UsuarioServices : ControllerBase
     {
         private readonly IMongoCollection<Usuario> _usuarioCollection;
 
@@ -23,13 +23,13 @@ namespace Services
             return await _usuarioCollection.Find(x => true).ToListAsync();
         }
 
-        public async Task<IActionResult> CadastrarUsuarioAsync(string nome, string email, string endereco)
+        public async Task<IActionResult> CadastrarUsuarioAsync(string Nome, string Email, string Endereco)
         {
             var usuario = new Usuario
             {
-                nome = nome,
-                email = email,
-                endereco = endereco
+                Nome = Nome,
+                Email = Email,
+                Endereco = Endereco
             };
 
             await _usuarioCollection.InsertOneAsync(usuario);
@@ -37,32 +37,32 @@ namespace Services
             return new OkObjectResult(usuario);
         }
 
-        public async Task<IActionResult> AtualizarUsuarioAsync(string id, string nome, string email, string endereco)
+        public async Task<IActionResult> AtualizarUsuarioAsync(string Id, string Nome, string Email, string Endereco)
         {
             var usuario = await _usuarioCollection
-                .Find(x => x.id == id)
+                .Find(x => x.Id == Id)
                 .FirstOrDefaultAsync();
 
             if (usuario == null) return new NotFoundResult();
 
-            usuario.nome = nome;
-            usuario.email = email;
-            usuario.endereco = endereco;
+            usuario.Nome = Nome;
+            usuario.Email = Email;
+            usuario.Endereco = Endereco;
 
-            await _usuarioCollection.ReplaceOneAsync(x => x.id == id, usuario);
+            await _usuarioCollection.ReplaceOneAsync(x => x.Id == Id, usuario);
 
             return new OkObjectResult(usuario);
         }
 
-        public async Task<bool> ExcluirUsuarioAsync(string id)
+        public async Task<bool> ExcluirUsuarioAsync(string Id)
         {
             var usuario = await _usuarioCollection
-                .Find(x => x.id == id)
+                .Find(x => x.Id == Id)
                 .FirstOrDefaultAsync();
 
             if (usuario == null) return false;
 
-            await _usuarioCollection.DeleteOneAsync(x => x.id == id);
+            await _usuarioCollection.DeleteOneAsync(x => x.Id == Id);
 
             return true;
         }
