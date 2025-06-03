@@ -2,6 +2,8 @@
 using Model;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using System.Text.RegularExpressions;
 namespace Services
 {
     public class AutoresServices : ControllerBase
@@ -20,58 +22,58 @@ namespace Services
             return await _autoresCollection.Find(x => true).ToListAsync();
         }
 
-        public async Task<List<Autores>> PesquisarAutorAsync(string nome)
+        public async Task<List<Autores>> PesquisarAutorAsync(string letraInicial)
         {
             var filter = Builders<Autores>.Filter.Empty;
-            if (!string.IsNullOrEmpty(nome))
+            if (!string.IsNullOrWhiteSpace(letraInicial))
             {
-                filter &= Builders<Autores>.Filter.Regex(x => x.nome, new MongoDB.Bson.BsonRegularExpression(nome, "i"));
+                var regex = new BsonRegularExpression($"^{Regex.Escape(letraInicial)}", "i");
+                filter = Builders<Autores>.Filter.Regex(a => a.Nome, regex);
             }
+
             return await _autoresCollection.Find(filter).ToListAsync();
         }
 
-        public async Task<IActionResult> CadastrarAutorAsync(string nome, string biografia, string nacionalidade)
+        public async Task<IActionResult> CadastrarAutorAsync(string Nome, string Biografia, string Nacionalidade)
         {
             var autores = new Autores
             {
-                nome = nome,
-                biografia = biografia,
-                nacionalidade = nacionalidade
+                Nome = Nome,
+                Biografia = Biografia,
+                Nacionalidade = Nacionalidade
             };
 
             await _autoresCollection.InsertOneAsync(autores);
             return Ok(autores);
         }
 
-        public async Task<IActionResult> AtualizarAutorAsync(string id, string nome, string biografia, string nacionalidade)
+        public async Task<IActionResult> AtualizarAutorAsync(string Id, string Nome, string Biografia, string Nacionalidade)
         {
             var autores = await _autoresCollection
-                .Find(x => x.id == id)
+                .Find(x => x.Id == Id)
                 .FirstOrDefaultAsync();
 
             if (autores == null) return NotFound();
 
-            autores.nome = nome;
-            autores.biografia = biografia;
-            autores.nacionalidade = nacionalidade;
-            await _autoresCollection.ReplaceOneAsync(x => x.id == id, autores);
-           
+            autores.Nome = Nome;
+            autores.Biografia = Biografia;
+            autores.Nacionalidade = Nacionalidade;
+            await _autoresCollection.ReplaceOneAsync(x => x.Id == Id, autores);
+
             return Ok(autores);
         }
 
-        public async Task<bool> ExcluirAutorAsync(string id)
+        public async Task<bool> ExcluirAutorAsync(string Id)
         {
             var autores = await _autoresCollection
-                .Find(x => x.id == id)
+                .Find(x => x.Id == Id)
                 .FirstOrDefaultAsync();
 
             if (autores == null) return false;
-           
-            await _autoresCollection.DeleteOneAsync(x => x.id == id);
-            
+
+            await _autoresCollection.DeleteOneAsync(x => x.Id == Id);
+
             return true;
         }
-
-      
     }
 }
