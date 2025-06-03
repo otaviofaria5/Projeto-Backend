@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Services
 {
-    public class AvaliacoesServices
+    public class AvaliacoesServices : ControllerBase
     {
         private readonly IMongoCollection<Avaliacoes> _avaliacoesCollection;
         private readonly IMongoCollection<Livros> _livrosCollection;
@@ -25,17 +25,17 @@ namespace Services
             return await _avaliacoesCollection.Find(x => true).ToListAsync();
         }
 
-        public async Task<IActionResult> ExibirLivroAsync(string nomeLivro)
+        public async Task<IActionResult> ExibirLivroAsync(string Livro)
         {
             var livro = await _livrosCollection
-                .Find(l => l.titulo == nomeLivro)
+                .Find(l => l.Titulo == Livro)
                 .FirstOrDefaultAsync();
 
             if (livro == null)
                 return new NotFoundObjectResult("Livro não encontrado.");
 
             var avaliacoes = await _avaliacoesCollection
-                .Find(x => x.livroId == livro.id)
+                .Find(x => x.LivroId == livro.Id)
                 .ToListAsync();
          
             if (avaliacoes.Count == 0)
@@ -46,17 +46,20 @@ namespace Services
             return new OkObjectResult(avaliacoes.FirstOrDefault());
         }
 
-        public async Task<IActionResult> CadastrarAvaliacaoAsync(string nomeLivro, string nomeUsuario, int avaliacao, string comentario)
+        public async Task<IActionResult> CadastrarAvaliacaoAsync(string Livro, string Nome, int Avaliacao, string Comentario)
         {
+            if (Avaliacao < 1 || Avaliacao > 5)
+                return new BadRequestObjectResult("A avaliação deve ser entre 1 e 5.");
+
             var livro = await _livrosCollection
-                .Find(l => l.titulo == nomeLivro)
+                .Find(l => l.Titulo == Livro)
                 .FirstOrDefaultAsync();
 
             if (livro == null)
                 return new NotFoundObjectResult("Livro não encontrado.");
 
             var usuario = await _usuariosCollection
-                .Find(u => u.nome == nomeUsuario)
+                .Find(u => u.Nome == Nome)
                 .FirstOrDefaultAsync();
 
             if (usuario == null)
@@ -64,10 +67,10 @@ namespace Services
 
             var avaliacaoObj = new Avaliacoes
             {
-                livroId = livro.id, 
-                usuarioId = usuario.id, 
-                avaliacao = avaliacao,
-                comentario = comentario
+                LivroId = livro.Id, 
+                UsuarioId = usuario.Id, 
+                Avaliacao = Avaliacao,
+                Comentario = Comentario
             };
 
             await _avaliacoesCollection.InsertOneAsync(avaliacaoObj);
@@ -75,18 +78,6 @@ namespace Services
             return new OkObjectResult(avaliacaoObj);
         }
 
-        public async Task<bool> ExcluirAvaliacaoAsync(string id)
-        {
-            var avaliacao = await _avaliacoesCollection
-                .Find(x => x.id == id)
-                .FirstOrDefaultAsync();
-           
-            if (avaliacao == null) return false;
-
-            await _avaliacoesCollection.DeleteOneAsync(x => x.id == id);
-           
-            return true;
-        }
 
     }
 }

@@ -8,17 +8,20 @@ namespace Model
 {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? id { get; set; }
+        [BsonElement("id")]
+        public string? Id { get; set; }
+        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         [BsonElement("livroId")]
+        public string? LivroId { get; set; }
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string? livroId { get; set; }
         [BsonElement("usuarioId")]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string? usuarioId { get; set; }
+        public string? UsuarioId { get; set; }
         [Required(ErrorMessage = "A Avalição é obrigatória.")]
-        public int? avaliacao { get; set; } // 1 a 5
+        [BsonElement("avaliacao")]
+        public int? Avaliacao { get; set; } // 1 a 5
         [Required(ErrorMessage = "O comentário é obrigatório.")]
-        public string? comentario { get; set; }
+        [BsonElement("comentario")]
+        public string? Comentario { get; set; }
 
 
     }
