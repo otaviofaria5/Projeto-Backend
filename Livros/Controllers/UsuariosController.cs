@@ -45,7 +45,8 @@ namespace Controllers
 
             if (!sucesso) return NotFound("Usuário não encontrado.");
 
-            return NoContent();
+     
+            return Ok("Usuário Excluído Com Sucesso.");
         }
     }
 }
