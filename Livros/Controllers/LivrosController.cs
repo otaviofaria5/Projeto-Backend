@@ -42,7 +42,7 @@ namespace Controllers
             var livros = await _livrosServices.ObterLivrosReservadosAsync();
             return Ok(livros);
         }
-        // CONCLUIDO TIRAR DUVIDAS COM DANI SOBRE LIVROS DISPONIVEIS E RESERVADOS
+
 
         [HttpPost]
         public async Task<IActionResult> CriarLivro(string Titulo, string Autor, string Genero, string Isbn, string Descricao)
@@ -51,7 +51,7 @@ namespace Controllers
 
             return Ok(livro);
         }
-        //DUVIDA PRETENDE COM DANI COM BANCO
+
 
         [HttpPut]
         public async Task<IActionResult> AtualizarLivro(string Id, string Titulo, string Autor, string Genero, string Isbn, string Descricao)
@@ -64,7 +64,7 @@ namespace Controllers
 
             return Ok(livroAtualizado);
         }
-        //FALTA TESTAR
+
 
         [HttpDelete]
         public async Task<IActionResult> ExcluirLivro(string Id)
@@ -78,6 +78,6 @@ namespace Controllers
 
             return Ok("Livro Excluido Com Sucesso");
         }
-        //CONCLUIDO       
+     
     }
 }
