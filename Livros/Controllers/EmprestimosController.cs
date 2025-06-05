@@ -6,93 +6,71 @@ namespace Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmprestimosController : ControllerBase
+    public class EmprestimosController(EmprestimosServices emprestimosServices) : ControllerBase
     {
-        private readonly EmprestimosServices _emprestimosServices;
-
-        public EmprestimosController(EmprestimosServices emprestimosServices)
-        {
-            _emprestimosServices = emprestimosServices;
-        }
+        private readonly EmprestimosServices _emprestimosServices = emprestimosServices;
 
         [HttpGet]
         public async Task<ActionResult<List<Emprestimos>>> GetEmprestimos()
         {
             var emprestimos = await _emprestimosServices.GetAsync();
+
             return Ok(emprestimos);
         }
-        // Concluido
         [HttpGet("historico")]
-        public async Task<IActionResult> ObterHistoricoPorNome(string nome)
+        public async Task<IActionResult> ObterHistoricoEmprestimos()
         {
-            var historico = await _emprestimosServices.ObterHistoricoPorNomeAsync(nome);
-            var resultado = historico.Select(e => new
-            {
-                Livro = e.livroId, 
-                e.dataEmprestimo,
-                DataPrevistaDevolucao = e.dataDevolucaoPrevista,
-                e.dataDevolucaoReal
-            });
-            return Ok(resultado);
-        }
-        // Concluido
+            var historico = await _emprestimosServices.ObterHistoricoAsync();
 
-        [HttpGet("emprestados")]
+            return Ok(historico);
+        }
+
+
+        [HttpGet("lista")]
         public async Task<IActionResult> ObterLivrosEmprestados()
         {
             var emprestados = await _emprestimosServices.ObterLivrosEmprestadosAsync();
+
             return Ok(emprestados);
         }
 
-        // Concluido
 
         [HttpPost("registrar")]
-        public async Task<IActionResult> RegistrarEmprestimo(string nome, string titulo)
+        public async Task<IActionResult> RegistrarEmprestimo(string Nome, string Titulo, DateTimeOffset DataEmprestimo, DateTimeOffset DataDevolucaoPrevista)
         {
-            var resultado = await _emprestimosServices.RegistrarEmprestimoAsync(nome, titulo);
+            var resultado = await _emprestimosServices.RegistrarEmprestimoAsync(Nome, Titulo, DataEmprestimo, DataDevolucaoPrevista );
+
             if (resultado == null)
             {
                 return NotFound("Usuário ou livro não encontrado.");
             }
-            return Ok(new { mensagem = resultado });
+
+            return Ok(new { mensagem = (resultado as ObjectResult)?.Value });
         }
-        //CONLCUIDO
 
-        [HttpPost("devolverPorTitulo")]
-        public async Task<IActionResult> RegistrarDevolucao(string titulo)
+     
+
+        [HttpPost("devolver")]
+        public async Task<IActionResult> RegistrarDevolucao(string Nome, string Livro)
         {
-            var resultado = await _emprestimosServices.RegistrarDevolucaoPorTituloAsync(titulo);
-            return Ok(new { mensagem = resultado });
-        }
-        // duvida pendente com Danielle
-
-        [HttpPost("devolver/id")]
-        public async Task<IActionResult> RegistrarDevolucaoPorId(string emprestimoId)
-        {
-            var resultado = await _emprestimosServices.RegistrarDevolucaoAsync(emprestimoId);
-
-            if (resultado == "Empréstimo inválido ou já devolvido.")
+            if (string.IsNullOrWhiteSpace(Livro) || string.IsNullOrWhiteSpace(Nome))
             {
-                return NotFound(new { mensagem = resultado });
+                return BadRequest("Nome do livro e nome do usuário são obrigatórios.");
             }
 
-            return Ok(new { mensagem = resultado });
-        }
+            var resultado = await _emprestimosServices.RegistrarDevolucaoAsync(Nome, Livro);
 
-        // duvida pendente com Danielle
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteEmprestimos(string id)
-        {
-            var existingEmprestimo = await _emprestimosServices.GetAsync();
-            if (existingEmprestimo == null)
+            if (resultado is ObjectResult objectResult && objectResult.Value is string mensagem &&
+                (mensagem.StartsWith("Livro não encontrado") ||
+                 mensagem.StartsWith("Usuário não encontrado") ||
+                 mensagem.StartsWith("Empréstimo inválido")))
             {
-                return NotFound();
+                return NotFound(mensagem);
             }
-            await _emprestimosServices.ExlcuirEmprestimosAsync(id);
-            return NoContent();
+
+            return Ok(new { mensagem = (resultado as ObjectResult)?.Value });
         }
 
-        // Concluido
+
     }
 }
