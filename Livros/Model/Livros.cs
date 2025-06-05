@@ -8,21 +8,27 @@ namespace Model
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? id { get; set; }
+        [BsonElement("id")]
+        public string? Id { get; set; }
 
-        public string? titulo { get; set; }
-        [BsonElement("autorId")]
+        [Required(ErrorMessage = "O Titulo é obrigatório.")]
+        [BsonElement("titulo")]
+        public string? Titulo { get; set; }
+
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string? autorId { get; set; }
+        [BsonElement("autorId")]
+        public string? AutorId { get; set; }
 
         [Required(ErrorMessage = "O Genero é obrigatória.")]
-        public string? genero { get; set; }
+        [BsonElement("genero")]
+        public string? Genero { get; set; }
 
         [Required(ErrorMessage = "O Ibsn é obrigatória.")]
-        public string? isbn { get; set; }
+        [BsonElement("isbn")]
+        public string? Isbn { get; set; }
         [Required(ErrorMessage = "A Descricão é obrigatória.")]
-
-        public string? descricao { get; set; }
+        [BsonElement("descricao")]
+        public string? Descricao { get; set; }
 
         [BsonDefaultValue(true)]
         public bool Disponivel { get; set; } = true;
